@@ -1,0 +1,9 @@
+language: python
+install:
+  - pip install -r requirements.txt
+script:
+  - pytest --cov=src
+services:
+  - postgresql
+after_success:
+  - coveralls
