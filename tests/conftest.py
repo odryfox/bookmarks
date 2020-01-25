@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from alembic.command import upgrade as alembic_upgrade
 from alembic.config import Config as AlembicConfig
@@ -5,7 +7,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
-database_url = "postgresql://localhost/bookmarks_testing"
+from dotenv import load_dotenv
+load_dotenv()
+
+default_database_url = "postgresql://localhost/bookmarks_testing"
+database_url = os.environ.get("TEST_DATABASE_URL", default_database_url)
 engine = create_engine(database_url)
 Session = sessionmaker()
 

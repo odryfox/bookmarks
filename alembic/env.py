@@ -7,6 +7,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 sys.path.append(os.getcwd())
 
@@ -15,7 +18,8 @@ sys.path.append(os.getcwd())
 config = context.config
 
 if not config.get_main_option("sqlalchemy.url"):
-    database_url = "postgresql://localhost/bookmarks_development"
+    default_database_url = "postgresql://localhost/bookmarks_development"
+    database_url = os.environ.get("DATABASE_URL", default_database_url)
     config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging.
