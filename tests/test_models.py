@@ -1,5 +1,3 @@
-import pytest
-
 from src.models import Board
 
 
@@ -16,7 +14,6 @@ def test_eq_boards():
     assert other_board == board
 
 
-@pytest.mark.skip
 def test_saved_board(session):
     board = Board()
     session.add(board)
