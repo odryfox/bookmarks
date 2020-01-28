@@ -7,3 +7,10 @@ services:
   - postgresql
 after_success:
   - coveralls
+deploy:
+  provider: heroku
+  api_key:
+    secure: AHY8FKrDwpOPbbHELTRNjTgENko09hYc0/oe2gIMDqS1fZliE05FUlYhbRcy56be6iKUvu3dUWrN4Gm27HQZfBEzOEibOxQjwL9jP/KCKYQHc8oFIYx6fmw7TY2KHPn1l0Kdt9Uv/wlkWUA89RxT/OBHQ2c9MN7nblAynzh8qJVm1cwXgV/DEBO37dXcYAeuuA7KJbtlUkdcN0mG68kPW9MtyFjwyydeJVLE0+v4EQCPrUNDZ72ofsYCRyoH5gjYvHAlGUr0lvUVlwDjQlcPOmrYHuapRwN6KuwZjvJkrowDjSJNV1u0TLEv3LaMFFwftkSCh3j9cdThfZWVTBr39cnn0ikf32kVKd82RZbaxU/AD0BdsIvTLhZ8oVe8WrkxHRTt/PpFlx8k4LEOlGHnOMSBfFyu6La8S5qoRgQX7tNns8FGfEJmch7saLnBaBZHICMTbpYUauR5KN6MPHdG+o1tDY2Z1lL+CHMmSxgqfUpke+B6b0Nx5z1EQaMMFy7GkCzqsXbOj4Jo8vduHWp8rk5JK61aUtWSiSa/3K5k6uh4yMIDNnqQw2SnyPDiYAiMuntQg43BdCwnlVOMwsQ/g0uOKWZM1fUQ6AbpAnFWn1/+xl7pJNxoObY5oz+NelcyJCiD9IWewNNWZuweB86nr96d+AxyzQkJyIC8B8gsRrA=
+  app: bookmarks-prod
+  run:
+    - alembic upgrade head
