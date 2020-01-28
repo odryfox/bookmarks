@@ -18,16 +18,15 @@ sys.path.append(os.getcwd())
 config = context.config
 
 if not config.get_main_option("sqlalchemy.url"):
-    default_database_url = "postgresql://localhost/bookmarks_development"
-    database_url = os.environ.get("DATABASE_URL", default_database_url)
+    database_url = os.environ["DATABASE_URL"]
     config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-from src.models import Base
-target_metadata = Base.metadata
+from src.db import db
+target_metadata = db.Model.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

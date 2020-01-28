@@ -3,42 +3,44 @@ import os
 import pytest
 from alembic.command import upgrade as alembic_upgrade
 from alembic.config import Config as AlembicConfig
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
-from dotenv import load_dotenv
+from src.db import db as database
+
 load_dotenv()
 
-default_database_url = "postgresql://localhost/bookmarks_testing"
-database_url = os.environ.get("TEST_DATABASE_URL", default_database_url)
-engine = create_engine(database_url)
-Session = sessionmaker()
 
-
-@pytest.fixture(scope="session", autouse=True)
-def db():
-    if not database_exists(database_url):
-        create_database(database_url)
-
+def migrate_db(database_url: str):
     alembic_config = AlembicConfig("alembic.ini")
     alembic_config.set_main_option("sqlalchemy.url", database_url)
     alembic_upgrade(alembic_config, "head")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def init_db():
+    default_database_url = "postgresql://localhost/bookmarks_testing"
+    database_url = os.environ.get("TEST_DATABASE_URL", default_database_url)
+
+    if database_exists(database_url):
+        drop_database(database_url)
+
+    create_database(database_url)
+    migrate_db(database_url)
+    database.init_from_url(database_url)
+
     yield
+
     drop_database(database_url)
 
 
-@pytest.fixture(scope="module")
-def connection():
-    connection = engine.connect()
-    yield connection
-    connection.close()
+@pytest.fixture
+def db():
+    database.truncate_all()
+    yield database
+    database.truncate_all()
 
 
 @pytest.fixture
-def session(connection):
-    transaction = connection.begin()
-    session = Session(bind=connection)
-    yield session
-    session.close()
-    transaction.rollback()
+def session(db):
+    yield db.session

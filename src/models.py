@@ -1,10 +1,9 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+from src.db import db
 
 
-class Board(Base):
+class Board(db.Model):
     __tablename__ = "boards"
 
     id = Column(Integer, primary_key=True)
