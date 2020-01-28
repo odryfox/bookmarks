@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from src.db import db as database
+from src.web import create_app
 
 load_dotenv()
 
@@ -44,3 +45,13 @@ def db():
 @pytest.fixture
 def session(db):
     yield db.session
+
+
+@pytest.fixture(scope="session")
+def web_app():
+    return create_app()
+
+
+@pytest.fixture(scope="session")
+def client(web_app):
+    return web_app.test_client()
