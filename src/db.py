@@ -27,3 +27,11 @@ class SQLAlchemy:
 
 
 db = SQLAlchemy()
+
+
+from src.models import Board
+
+
+__all__ = [
+    Board,
+]
