@@ -49,7 +49,7 @@ def session(db):
 
 @pytest.fixture(scope="session")
 def web_app():
-    return create_app()
+    return create_app("test")
 
 
 @pytest.fixture(scope="session")

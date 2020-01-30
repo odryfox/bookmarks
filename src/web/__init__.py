@@ -3,11 +3,11 @@ from flask import Flask
 from src.web import db
 
 
-def create_app():
+def create_app(env_name):
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = "super_secret_key"
-    app.config["FLASK_ADMIN_SWATCH"] = "paper"
+    from src.web.config import config_by_env_name
+    app.config.from_object(config_by_env_name[env_name])
 
     db.init_app(app)
 
