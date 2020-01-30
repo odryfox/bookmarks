@@ -1,15 +1,15 @@
-import os
-
 import pytest
 from alembic.command import upgrade as alembic_upgrade
 from alembic.config import Config as AlembicConfig
 from dotenv import load_dotenv
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
+from src.config import config
 from src.db import db as database
 from src.web import create_app
 
 load_dotenv()
+env_name = "test"
 
 
 def migrate_db(database_url: str):
@@ -19,10 +19,13 @@ def migrate_db(database_url: str):
 
 
 @pytest.fixture(scope="session", autouse=True)
-def init_db():
-    default_database_url = "postgresql://localhost/bookmarks_testing"
-    database_url = os.environ.get("TEST_DATABASE_URL", default_database_url)
+def init_config():
+    config.init_from_env_name(env_name)
 
+
+@pytest.fixture(scope="session", autouse=True)
+def init_db():
+    database_url = config.DATABASE_URL
     if database_exists(database_url):
         drop_database(database_url)
 
