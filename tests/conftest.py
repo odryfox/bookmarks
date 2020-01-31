@@ -38,7 +38,7 @@ def init_db():
     drop_database(database_url)
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def db():
     database.truncate_all()
     yield database
