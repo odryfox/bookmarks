@@ -17,3 +17,11 @@ Run tests
 .. code-block:: text
 
     pytest
+
+
+Run web part of application
+---------------------------
+
+.. code-block:: text
+
+    python manage_web.py
