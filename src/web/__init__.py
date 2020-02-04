@@ -6,6 +6,8 @@ from src.web import db
 def create_app(env_name):
     app = Flask(__name__)
 
+    app.url_map.strict_slashes = True
+
     from src.web.config import config
     config.init_from_env_name(env_name)
     app.config.from_object(config)
