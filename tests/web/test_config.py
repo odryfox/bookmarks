@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from src.web.config import Config
@@ -35,9 +33,9 @@ def test_test_config():
     )
 
 
-def test_prod_config():
+def test_prod_config(monkeypatch):
     config = Config()
-    os.environ["SECRET_KEY"] = "not_super_secret_key"
+    monkeypatch.setenv("SECRET_KEY", "not_super_secret_key")
     config.init_from_prod_env()
     assert (
         not config.DEBUG and
@@ -66,8 +64,8 @@ def test_init_from_env_name():
     assert config1 == config2
 
 
-def test_prod_config_without_secret_key():
+def test_prod_config_without_secret_key(monkeypatch):
     config = Config()
-    del os.environ["SECRET_KEY"]
+    monkeypatch.delenv("SECRET_KEY", raising=False)
     with pytest.raises(KeyError):
         config.init_from_prod_env()
