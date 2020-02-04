@@ -24,7 +24,7 @@ class Config:
         self.DATABASE_URL = database_url
 
     def init_from_prod_env(self):
-        database_url = os.environ["TEST_DATABASE_URL"]
+        database_url = os.environ["DATABASE_URL"]
         self.DATABASE_URL = database_url
 
 
