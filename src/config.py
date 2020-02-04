@@ -27,5 +27,11 @@ class Config:
         database_url = os.environ["DATABASE_URL"]
         self.DATABASE_URL = database_url
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, self.__class__) and
+            other.DATABASE_URL == self.DATABASE_URL
+        )
+
 
 config = Config()
