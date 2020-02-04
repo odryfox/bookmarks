@@ -37,7 +37,7 @@ def test_prod_config(monkeypatch):
     assert config.DATABASE_URL == database_url
 
 
-def test_init_from_env_name():
+def test_init_from_env_name(monkeypatch):
     config1 = Config()
     config2 = Config()
 
@@ -50,6 +50,9 @@ def test_init_from_env_name():
     config2.init_from_env_name("test")
 
     assert config1 == config2
+
+    database_url = "postgresql://localhost/bookmarks"
+    monkeypatch.setenv("DATABASE_URL", database_url)
 
     config1.init_from_prod_env()
     config2.init_from_env_name("prod")
